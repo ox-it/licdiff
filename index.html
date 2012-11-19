@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ 
+ Copyright 2011 University of Oxford 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+   http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+ 
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<link rel="stylesheet" href="css/ui-le-frog/jquery-ui-1.8.5.custom.css" type="text/css" />
+<link rel="stylesheet" href="css/form.css" type="text/css" />
+
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.5.custom.min.js"></script>
+<script type="text/javascript" src="js/licencedifferentiator.js"></script>
+<script type="text/javascript" src="js/MX_XML.js"></script>
+<script type="text/javascript" src="js/simpleXHR.js"></script>
+
+
+<script>
+	onload = function()
+	{
+		new XHR(LoadOK).send("matrix.xml");
+    }
+    LoadOK = function(r)
+    {
+        x1 = MX.XML.ToJSON(r.xml);
+		initLicences(x1.feed.entry);
+    }
+
+	OpenDialog = function(dialogText) {
+		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+	
+		document.getElementById("dialog-message").innerHTML = dialogText;
+		$( "#dialog-message" ).dialog({
+			modal: true,
+			buttons: {
+				Ok: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+	};
+	
+</script>
+</head>
+<body>
+	
+  <style type="text/css">
+	.column { width: 450px; float: left;}
+	.portlet { margin: 0 1em 0.2em 0; }
+	.portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
+	.portlet-header .ui-icon { float: right; }
+	.portlet-content { padding: 0.4em; display:none}
+	.ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; height: 50px !important; }
+	.ui-sortable-placeholder * { visibility: hidden; }
+	</style>
+
+<div id="dialog-message" title="This is your selection"></div>
+
+<div class="form-container">
+  <a href="http://www.oss-watch.ac.uk" target="_blank"><img src="images/ossWatchLogo.gif" /></a>
+  <h1 class="form-title">Licence differentiator</h1>
+
+<div class="form-desc no-ignore-whitespace">This tool attempts to help its users understand their own preferences in relation to free and open source software licences. It is no substitute for reading the licences themselves, and before placing any of your property under one of these licences, it is essential that you fully read and understand your chosen licence. The classifications of licence type that enable this tool to work are by necessity somewhat reductive, and therefore output of this tool cannot and must not be thought of as legal advice.
+
+<b>REMEMBER: ALWAYS READ AND UNDERSTAND YOUR CHOSEN LICENCE.</b>  
+</div>
+<p></p>
+
+<div class="form"><form id="form">
+<br/>
+<div class="errorbox-good">
+<div class="item  ss-section-header"><div class="form-entry"><h2 class="section-title">Choice One</h2>
+<div class="no-ignore-whitespace"></div>
+</div></div></div>
+<div class="errorbox-good">
+<div class="item  ss-select"><div class="form-entry"><label class="q-title" for="q1">Do you want to limit the results to licences that the Open Source Initiative describe as being "popular and widely used or with strong communities"?
+</label>
+<label class="q-help" for="q1">This will guarantee that the licence will be 'mainstream' at the possible expense of some more esoteric but possibly useful characteristics.</label>
+<select name="entry.0.single" id="q1" onchange="processChoice('q1');">
+  <option value="q1strong_-1">Please choose</option>
+  <option value="q1strong_careless">I don't care</option> 
+  <option value="q1strong_1">Only include licences that are popular and widely used or with strong communities</option> 
+  <option value="q1strong_0">Include all licences</option>
+ </select></div></div></div>
+<div class="errorbox-good">
+<div class="item  ss-section-header"><div class="form-entry"><h2 class="section-title">Choice Two (a)</h2>
+<div class="no-ignore-whitespace">All Free and Open Source licences will allow others to make modified versions of your code, and to make these modified versions available to others. Your licence can make conditions about how this happens - specifically what licences can be used on these modified versions. These conditions can help keep your code free, but they can also put some people off reusing your code. </div>
+</div></div></div>
+<div class="errorbox-good">
+<div class="item  ss-select"><div class="form-entry"><label class="q-title" for="q2a"> Do you want to include licensing conditions on reuse? 
+</label>
+<label class="q-help" for="q2a">If not, your licence will be one of the so-called 'permissive' licences.</label>
+<select name="entry.1.single" id="q2a" onchange="processChoice('q2a');">
+  <option value="q2anocopyleft_-1">Please choose</option>
+  <option value="q2anocopyleft_0">I want to include licensing conditions on reuse</option>
+  <option value="q2anocopyleft_1">I don't want to include licensing conditions on reuse</option>
+</select></div></div></div>
+<br/> <div class="errorbox-good" id="q2b-box">
+<div class="item  ss-section-header"><div class="form-entry"><h2 class="section-title">Choice Two (b)</h2>
+<div class="no-ignore-whitespace">This question is only if you chose to include licensing conditions on reuse.
+
+
+You chose to include specific licensing conditions on reuse. Sometimes these are called 'copyleft'. Copyleft comes in two basic varieties:
+
+Strong Copyleft:  When a software project contains some of your code, the project as a whole must be distributed under your licence, if it is distributed at all. The effect of this will be that the source code to all additions made to the code will be available.
+
+Weak Copyleft:  When a software project contains some of your code, the parts of the project you originated must be distributed under your licence, if it is distributed at all. Other parts may be distributed under other licences, even though they form part of a work with is - as a whole - a modified version of your code. The effect of this will be that the source code to some additions made to the code may not be available.
+</div>
+</div></div>
+<br/> 
+<div class="item  ss-select"><div class="form-entry"><label class="q-title" for="q2b">In case you chose to include licensing conditions in the previous question: Which form of copyleft do you want?
+</label>
+<label class="q-help" for="q2b"></label>
+<select name="entry.67.single" id="q2b" onchange="processChoice('q2b');">
+  <option value="q2bstrong_-1">Please choose</option> 
+  <option value="q2bstrong_1">Strong copyleft</option> 
+  <option value="q2bweak_1">Weak Copyleft</option>
+</select></div></div></div>
+<br/> <div class="errorbox-good" id="q2c-box">
+<div class="item  ss-section-header"><div class="form-entry"><h2 class="section-title">Choice Two (c)</h2>
+<div class="no-ignore-whitespace">This question is only if you answered 'Weak Copyleft' in the previous question.
+
+We defined 'Weak Copyleft' - as a reminder -  this way:
+
+Weak Copyleft: When a software project contains some of your code, the parts of the project you originated must be distributed under your licence, if it is distributed at all. Other parts may be distributed under other licences, even though they form part of a work with is - as a whole - a modified version of your code. The effect of this will be that the source code to some additions made to the code may not be available.
+
+Now we need to decide which parts of the modified version we will allow to bear a different licence:
+
+Module Level: Each functional sub-section ('module') of code within the project is considered separately. Where a module contains some of your code, it must bear your licence. Where it does not, the author of that code gets to choose their own licence. 
+
+File Level: Each collection of code and data that is distinct according to the computer's file system ('file') within the project is considered separately. Where a file contains some of your code, it must bear your licence. Where it does not, the author of that code gets to choose their own licence. 
+
+Library Interface Level: Your code is a software library - a collection of software functionality which is usable by other programs via an agreed interface. Modifications of your library must bear your licence, if they are distributed. Programs that use your library, and are perhaps distrbuted with it included,  need not use your licence.
+</div>
+</div></div>
+<br/> 
+<div class="item  ss-select"><div class="form-entry"><label class="q-title" for="q2c">In case you chose 'Weak Copyleft', which form of weak copyleft do you want?
+</label>
+<label class="q-help" for="q2c">We need to decide which parts of the modified version we will allow to bear a different licence.</label>
+<select name="entry.2.single" id="q2c" onchange="processChoice('q2c');">
+  <option value="q2c_-1">Please choose</option> 
+  <option value="q2cmod_1">Module Level</option> 
+  <option value="q2cfile_1">File Level</option> 
+  <option value="q2clib_1">Library Interface Level</option>
+</select></div></div></div>
+<div class="errorbox-good">
+<div class="item  ss-section-header"><div class="form-entry"><h2 class="section-title">Choice Three</h2>
+<div class="no-ignore-whitespace">A 'jurisdiction' refers to a specific location or territory and its system of law. Where a licence specifies a jurisdiction, the licensor and the licensee(s) agree that the terms in the licence are to be understood in reference to that jurisdiction's law and that legal action resulting from breach of the licence's terms will take place in that jurisdiction. So, for example, if a UK person licenses some of their code under the Mozilla Public License v1.1 and then discovers that someone is using that code without abiding by the licence conditions, they would have to bring a legal action against that person in "the Federal Courts of the Northern District of California, with venue lying in Santa Clara County, California". Note, though, that traditionally free and open source software owners do not tend to seek monetary damages from those who infringe their licensing terms, but instead to request that the infringer either starts abiding by the terms or terminates their use of the code in question. For these purposes it is often unnecessary to resort to actually taking an infringer to court, particularly if they have a public profile and reputation to protect. Often simply requesting compliance can be effective, and if that fails, publicising the infringement can help achieve compliance.
+
+Not all free and open source software licences specify a jurisdiction. In fact most are silent on the subject. In these cases any jurisdiction can be selected when and if necessary, although it is quite possible that the person you are trying to take to court will either ignore you or dispute your choice of location if it does not suit them.
+
+Finally some free and open source software licences state that the jurisdiction is either up to the licensor or automatically that of the licensor (where they reside or principally do business).   
+</div>
+</div></div></div>
+<div class="errorbox-good">
+<div class="item  ss-select"><div class="form-entry"><label class="q-title" for="q3">How would you like your licence to handle the issue of jurisdiction?
+</label>
+<label class="q-help" for="q3"></label>
+<select name="entry.3.single" id="q3" onchange="processChoice('q3')">
+  <option value="q3juris_-1">Please choose</option>
+  <option value="q3juris_careless">I don't care - even if it specifies somewhere overseas</option> 
+  <option value="q3juris_0">I'd like a licence that is silent on the subject</option> 
+  <option value="q3juris_1">I'd like the jurisdiction to be my own</option>
+</select></div></div></div>
+<div class="errorbox-good">
+<div class="item  ss-section-header"><div class="form-entry"><h2 class="section-title">Choice Four (a)</h2>
+<div class="no-ignore-whitespace">Do you or your institution own any software patents? If you do, and you release some code that embodies them under a free or open source software licence, then you are very likely granting rights to use the relevant patent (in connection with that code) to a large group of people - even if the licence does not explicitly say so. In many jurisdictions, for example the UK and the US, licensing someone to take a particular action (like copying or adapting your code) also impliedly licenses them to take all other steps necessary to take that action. These impliedly licensed steps would almost certainly include use of your embodied software patent. It should be noted that people who adapt your code cannot expand its functionality to capture other software patents of yours - you grant rights only to the patents embodied in the code you released, not any subsequent form the code may take.
+
+Some free and open source software licences say nothing on the subject of patent grants - although as noted above this may not mean that they grant no patent rights.
+
+Some free and open source software licences explicitly grant patent rights necessary to use, adapt and distribute the software.
+</div>
+</div></div></div>
+<div class="errorbox-good">
+<div class="item  ss-select"><div class="form-entry"><label class="q-title" for="q4a">What is your attitude to the issue of patent grants in relation to your desired licence?
+</label>
+<label class="q-help" for="q4a"></label>
+<select name="entry.4.single" id="q4a" onchange="processChoice('q4a')">
+  <option value="q4apat_-1">Please choose</option>
+  <option value="q4apat_careless">I don't care - I don't think I have any patents and I don't care what happens to them even if I do</option> 
+  <option value="q4apat_0">I'd like a licence that says nothing about granting patent rights, although it may well still do so</option> 
+  <option value="q4apat_1">I'd like a licence that explicitly grants the patent rights (if any)</option></select></div></div></div>
+<div class="errorbox-good" id="q4b-box">
+<div class="item  ss-section-header"><div class="form-entry"><h2 class="section-title">Choice Four(b)</h2>
+<div class="no-ignore-whitespace">Your free or open source software licence can include what is sometimes called a 'patent retaliation' clause. These sections of a licence essentially say that anyone who brings legal action alleging that the licensed software embodies one of their software patents will lose the licence you have granted to copy, use, adapt and distribute the code. It is intended to dissuade people from bringing this kind of legal action.</div>
+</div></div>
+<div class="item  ss-select"><div class="form-entry"><label class="q-title" for="q4b">What is your attitude to patent retaliation in your desired licence?
+</label>
+<label class="q-help" for="q4b"></label>
+<select name="entry.5.single" id="q4b" onchange="processChoice('q4b')">
+  <option value="q4bpatret_-1">Please choose</option>
+  <option value="q4bpatret_careless">I don't care - show me both kinds of licence</option> 
+  <option value="q4bpatret_1">I'd like a licence that incorporates a patent retaliation clause</option> 
+  <option value="q4bpatret_0">I'd like a licence that does not incorporate a patent retaliation clause</option>
+</select></div></div></div>
+<div class="errorbox-good" id="q5-box">
+<div class="item  ss-section-header"><div class="form-entry"><h2 class="section-title">Choice Five</h2>
+<div class="no-ignore-whitespace">All free or open source software licences specify that anyone who distributes or adapts the software must give credit to the original authors of the software somewhere in their distribution. Some free or open source software licences go further than this, and specify that the credit must take a particular form and appear in specific instances, for example on the software's user interface every time it is run. This kind of stipulation is sometimes called 'enhanced attribution' or 'badgeware'.</div>
+</div></div>
+<div class="item  ss-select"><div class="form-entry"><label class="q-title" for="q5">Do you want your licence to specify enhanced attribution?
+</label>
+<label class="q-help" for="q5"></label>
+<select name="entry.6.single" id="q5" onchange="processChoice('q5')">
+  <option value="q5enhattr_-1">Please choose</option>
+  <option value="q5enhattr_careless">I don't care - show me both kinds of licence</option> 
+  <option value="q5enhattr_1">I'd like a licence that specifies enhanced attribution</option> 
+  <option value="q5enhattr_0">I'd like a licence that does not specify enhanced attribution</option></select></div></div></div>
+<div class="errorbox-good" id="q6-box">
+<div class="item  ss-section-header"><div class="form-entry"><h2 class="section-title">Choice Six</h2>
+<div class="no-ignore-whitespace">If someone uses your code to create an online service or an in-house solution, perhaps adapting and improving it, most free and open source software licences do not specify that the source to the adapted or improved version must be released. Most free and open source software licences make it a condition of distribution that source code be released, and generally neither making services available over a network using the code or deploying the code within a single institution are defined as distribution within these licences. Some within the free and open source software community feel that this phenomenon, sometimes called the 'ASP (application service provider) loophole' or 'privacy loophole' needs to be fixed. Their argument is that fairness dictates that all those who benefit from the code must contribute their work back to the world, even if they are not strictly speaking distributing the code.
+ 
+To address this issue, some free or open source software licences make release of the source code a condition not only for distribution but also for internal deployment and/or making services available over a network using the software. These kind of conditions are therefore particularly suited to code which is likely to be used in-house or as a basis for a networked service.
+</div>
+</div></div>
+<div class="item  ss-select"><div class="form-entry"><label class="q-title" for="q6">Do you want your licence to address the 'privacy loophole'?
+</label>
+<label class="q-help" for="q6"></label>
+<select name="entry.7.single" id="q6" onchange="processChoice('q6')">
+  <option value="q6noloophole_-1">Please choose</option>
+  <option value="q6noloophole_careless">I don't care - show me both kinds of licence</option> 
+  <option value="q6noloophole_1">I'd like a licence that addresses the 'privacy loophole'</option> 
+  <option value="q6noloophole_0">I'd like a licence that does not address the 'privacy loophole'</option>
+</select></div></div></div>
+<div class="errorbox-good" id="q7-box">
+<div class="item  ss-section-header"><div class="form-entry"><h2 class="section-title">Choice Seven</h2>
+<div class="no-ignore-whitespace">Some free and open source software licences explicitly forbid the use of the authors' names to promote a product or service based upon the authors' code.</div>
+</div></div>
+<div class="item  ss-select"><div class="form-entry"><label class="q-title" for="q7">Do you want your licence to include such a 'no promotion' feature?
+</label>
+<label class="q-help" for="q7"></label>
+<select name="entry.18.single" id="q7" onchange="processChoice('q7')">
+  <option value="q7nopromo_-1">Please choose</option>
+  <option value="q7nopromo_careless">I don't care - show me both kinds of licence</option> 
+  <option value="q7nopromo_1">I'd like a licence that specifies 'no promotion'</option> 
+  <option value="q7nopromo_0">I'd like a licence that does not specify 'no promotion''</option>
+</select></div></div></div>
+<br/>
+<input type="hidden" name="pageNumber" value="0">
+<input type="hidden" name="backupCache" value="">
+
+<div class="item ss-navigate">
+  <div class="form-entry">
+    <input type="button" name="submit" value="Summary" onclick="OpenDialog(generateLicenceAnswersSummary())">
+  </div>
+</div>
+</form>
+</div>
+</div>
+
+
+<div id="licences_section" class="form-container column"></div>
+
+</body>
+</html>
