@@ -27,7 +27,7 @@ h3{font-size:1.1em}
 h4,h5,table{font-size:1em}
 hr{border:0;height:1px;background-color:#ddd}
 input,select,textarea,option{font-family:inherit;font-size:inherit}
-label{display:block}
+label{display:block; padding-bottom: .5em}
 li{line-height:1.5em;padding:0 0 .5em 0}
 ol{padding:0 0 1em 1.3em}
 p{padding:0 0 1em 0}
