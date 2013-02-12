@@ -15,11 +15,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<widget xmlns="http://www.w3.org/ns/widgets" id="http://www.getwookie.org/widgets/licdif" height="800" width="1024">
+<widget xmlns="http://www.w3.org/ns/widgets" id="http://www.getwookie.org/widgets/licdif" height="800" width="1024" version="1.1">
 	<name>Licence Differentiator</name>
 	<description>Differentiator to guide users towards choosing an open source software licence</description>
-	<icon src="icon.png"/>
-	<content src="index.html"/>
-	<author>Simal Team</author>
-	<license>Licensed under the Apache 2.0 License (see http://www.apache.org/licenses/LICENSE-2.0).</license>
+	<author href="http://oss-watch.ac.uk" email="info@oss-watch.ac.uk">OSS Watch</author>
+	<license href="http://www.apache.org/licenses/LICENSE-2.0">Licensed under the Apache 2.0 License.</license>
 </widget>

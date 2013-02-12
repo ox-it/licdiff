@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 University of Oxford
+ * Copyright 2011-2013 University of Oxford
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -82,34 +82,88 @@ function displayLicences() {
   }
   scores.sort(sortScores);
   for(i=0;i<scores.length;i++) {
-	licensesHtml += generateLicenceHtml(scores[i].title);
+	licensesHtml += generateLicenceHtml(getLicenceForTitle(scores[i].title));
   }
   document.getElementById("licences_section").innerHTML = licensesHtml;
 
-  for(i=0;i<loadedLicenceData.length;i++) {
-	addCssToLicence(loadedLicenceData[i]);
-  }
-  addGenericCssClasses();
 }
 
-function generateLicenceHtml(licenceTitle) {
-  html = "";
-  for(u = 0; u < loadedLicenceData.length; u++) {
+/*
+ * Return a license object matching a given title
+ */
+function getLicenceForTitle(licenceTitle){
+  for(var u = 0; u < loadedLicenceData.length; u++) {
     if(loadedLicenceData[u].title.$value == licenceTitle) {
-	  html += "<div class=\"portlet\" id=\"" + loadedLicenceData[u].title.$value + "\"><div class=\"portlet-header\">";
-	  html += processLicenceHeader(loadedLicenceData[u]) + "</div><div class=\"portlet-content\">";
-      html += generateLicenceAttributes(loadedLicenceData[u].content.$value) + "</div></div>\n";
-	}
-   }
+       return loadedLicenceData[u];
+    }
+  }
+}
+
+/*
+ * Generate a div for a license
+ */
+function generateLicenceHtml(licence) {
+  html = "";
+  
+  //
+  // Caclulate the score for this license
+  //
+  var score = calculateScore(licence);
+  
+  //
+  // Create a match level from 0 to 5, or "x" if no answers
+  // have been set
+  //
+  if (score.answers == 0 || !score.answers){
+    match = "x";
+  } else {
+      var match = Math.round((Number(score.matches)/Number(score.answers))*10);
+      if (match >= 10){
+        match = 5;
+      } else if (match >=7){
+        match = 4;
+      } else if (match >=5){
+        match = 3;
+      } else if (match >=2) {
+        match = 2;
+      } else if (match >0) {
+        match = 1;
+      } else {
+        match = 0;
+      }            
+  }
+  
+  //
+  // Create header 
+  //
+  var header = licence.title.$value;
+  header += "<div style=\"width:20%;float:right;text-align:right\">" + score.text + "</div>";
+  
+  //
+  // Create license attributes
+  //
+  var attributes =  generateLicenceAttributes(licence.content.$value)
+  
+  //
+  // Create div
+  //
+  html += "<div onclick=\"toggle(this)\" class=\"portlet score-"+match+" \" id=\"" + licence.title.$value + "\"><div class=\"portlet-header\">";
+  html += header + "</div><div class=\"portlet-content\">";
+  html += attributes + "</div></div>\n";
+
   return html;
 }
 
-function processLicenceHeader(licenceData) {
-  licenceHeader = "";
-  licenceHeader = licenceData.title.$value;
-  licenceHeader += "    ";
-  licenceHeader += "<div style=\"width:20%;float:right;text-align:right\">" + calculateScore(licenceData) + "</div>";
-  return licenceHeader;
+/*
+ * When user clicks a license, toggle it to be expanded or hidden
+ */
+function toggle(object){
+    var content = object.getElementsByClassName("portlet-content")[0]
+    if (content.style.display == "block"){
+        content.style.display = "none";
+    } else {
+        content.style.display = "block";
+    }
 }
 
   //  Limit to strong communities
@@ -136,6 +190,9 @@ function processLicenceHeader(licenceData) {
   // no choice   1  / -     -  
   // FIXME Don't calculate twice!
 function calculateScore(licenceData) {
+
+  var score = {};
+
   scoreText = "[";
   nrAnswers = 0;
   nrMatches = 0;
@@ -155,11 +212,17 @@ function calculateScore(licenceData) {
   if (nrAnswers == 0) {
     scoreText += "No score";
   } else {
-    scoreText += nrMatches + " out of " + nrAnswers;
+    scoreText += "<span class= \"nummatches\">" + nrMatches + "</span> out of " + nrAnswers;
   }
   
   scoreText += "]";
-  return scoreText;
+  
+  score.matches = nrMatches;
+  score.answers = nrAnswers;
+  score.text = scoreText;
+  
+  return score;
+  
 }
 
 function calculateQuestion(fullChoice, licenceData, nrMatches) {
@@ -365,34 +428,6 @@ function genYesNo(yesNoOption, matchingText) {
     yesNo = "No";
   }
   return yesNo;
-}
- 
-function addGenericCssClasses() {
-  $(".column").sortable({
-    connectWith: '.column'
-  });
-  $(".portlet").addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-		.find(".portlet-header")
-			.addClass("ui-corner-all")
-			.end();
-
-  $(".portlet-header").click(function() {
-		$(this).parents(".portlet:first").find(".portlet-content").toggle();
-  });
-
-  $(".column").disableSelection();
-}
-
-function addCssToLicence(licenceData) {
-	curId = licenceData.title.$value;
- 	licScore = scores[curId];
-	if(licScore == 0 || licScore == undefined) {
-	  headerClass =  "ui-widget-header";
-	} else {
-	  headerClass =  "ui-widget-header-low";
-	}
-	$(".portlet").find(".portlet-header")
-			.addClass(headerClass);
 }
 
 // after onchange event

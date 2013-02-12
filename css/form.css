@@ -36,5 +36,25 @@ ul{padding:0 0 1em 1em}
 .form-container{float:left;width:45em;height:55em;background-color:#fff;overflow:scroll;border:1px solid #ccc;margin:0 auto;padding:1em}
 .no-ignore-whitespace{*white-space:pre}
 .no-ignore-whitespace{white-space:pre-wrap;white-space:-moz-pre-wrap;word-wrap:break-word}
-.portlet{font-size:0.85em}
+.portlet{
+    font-size:0.85em;
+    font-weight: bold; 
+    color:white;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border: 10px;
+    padding: 5px;
+}
 .portlet-header{cursor:pointer}
+
+/*
+ * Scoring levels
+ */
+.score-5{background:green; border-color:green}
+.score-4{background:teal; border-color: teal}
+.score-3{background:orangered; border-color:orangered}
+.score-2{background:red;border-color:red}
+.score-1{background:darkred; border-color: darkred}
+.score-0{background:black; border-color:black}
+.score-x{background:gray; border-color:gray}
