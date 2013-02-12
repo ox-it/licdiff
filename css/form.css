@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 University of Oxford
+ * Copyright 2011-2013 University of Oxford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");   *
  * you may not use this file except in compliance with the License.  *
@@ -33,9 +33,8 @@ ol{padding:0 0 1em 1.3em}
 p{padding:0 0 1em 0}
 ul label{display:inline}
 ul{padding:0 0 1em 1em}
+
 .form-container{float:left;width:45em;height:55em;background-color:#fff;overflow:scroll;border:1px solid #ccc;margin:0 auto;padding:1em}
-.no-ignore-whitespace{*white-space:pre}
-.no-ignore-whitespace{white-space:pre-wrap;white-space:-moz-pre-wrap;word-wrap:break-word}
 .portlet{
     font-size:0.85em;
     font-weight: bold; 
@@ -45,8 +44,17 @@ ul{padding:0 0 1em 1em}
     -moz-border-radius: 3px;
     border: 10px;
     padding: 5px;
+    margin: 0 1em 0.2em 0;
 }
-.portlet-header{cursor:pointer}
+.portlet-header{
+    margin: 0.3em; 
+    padding-bottom: 4px; 
+    padding-left: 0.2em; 
+    cursor:pointer
+}
+.portlet-header .ui-icon { float: right; }
+.portlet-content { padding: 0.4em; display:none}
+.column { width: 450px; float: left;}
 
 /*
  * Scoring levels
@@ -58,3 +66,5 @@ ul{padding:0 0 1em 1em}
 .score-1{background:darkred; border-color: darkred}
 .score-0{background:black; border-color:black}
 .score-x{background:gray; border-color:gray}
+
+

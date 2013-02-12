@@ -439,6 +439,7 @@ function processChoice(formFieldId) {
   }
   updateForm(formFieldId);
   displayLicences();
+  updateLicenceAnswersSummary();
 } 
 
 function prepareLicencesList(fullChoice) {
@@ -533,7 +534,10 @@ function updateForm(formFieldId) {
   }
 }  
 
-// onsubmit of dialog box for the answers summary
+function updateLicenceAnswersSummary(){
+    document.getElementById("summary").innerHTML = generateLicenceAnswersSummary();
+}
+// answers summary
 function generateLicenceAnswersSummary() {
   return getLicAttrText(
 	awYesNo(choices['q1'], ONE_STRONG_LICENCES), 
