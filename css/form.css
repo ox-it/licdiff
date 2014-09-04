@@ -20,7 +20,7 @@ a:active{color:#f00}
 a:visited{color:#551a8b}
 a{color:#00c}
 body{padding:0.5em 1em;background-color:#e8eef7}
-h1,h2,h3,h4,h5{padding:2em 0 1em 0}
+h1,h2,h3,h4,h5{padding:1em 0 1em 0}
 h1,h2{font-size:1.3em}
 h1{font-size:1.8em;}
 h3{font-size:1.1em}
@@ -35,6 +35,7 @@ ul label{display:inline}
 ul{padding:0 0 1em 1em}
 
 .form-container{float:left;width:45em;height:55em;background-color:#fff;overflow:scroll;border:1px solid #ccc;margin:0 auto;padding:1em}
+.form-container a img {float:right;margin: 0px 1em 1em;}
 .portlet{
     font-size:0.85em;
     font-weight: bold; 
